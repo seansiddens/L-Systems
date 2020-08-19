@@ -14,3 +14,8 @@ from [Lindenmayer Systems.](https://en.wikipedia.org/wiki/L-system)
 4th Order Sierpinski Triangle Drawing
 ![4th-order-sierpinski-triangle](https://user-images.githubusercontent.com/11508260/90664871-16e1de00-e200-11ea-97c6-e9a07c6cfe54.gif)
 
+## Dependencies
+* Numpy
+* Pyglet
+* Python Turtle Graphics
+
