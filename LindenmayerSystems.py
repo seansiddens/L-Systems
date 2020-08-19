@@ -524,13 +524,12 @@ class SierpinskiTriangle:
     def get_name(self): return self.name
 
 
-
 class HilbertCurve:
     def __init__(self, order=0):
         self.name = "Hilbert Curve"
         self.angle = math.pi / 2
         self.axiom = "A"
-        self.rules = [["A", "-BF+AFA+FB-"], ["B", "AF-BFB-FA+"]]
+        self.rules = [["A", "-BF+AFA+FB-"], ["B", "+AF-BFB-FA+"]]
         self.sentence = ""
         self.order = order
 
@@ -565,10 +564,7 @@ class HilbertCurve:
         screen.bgcolor('black')
         screen.setworldcoordinates(-1, -1, scr_dim, scr_dim)
 
-        if self.order == 0:
-            length = scr_dim
-        else:
-            length = scr_dim / pow(2, self.order)
+        length = scr_dim / pow(2, self.order)
 
         t = turtle.Turtle()
         t.color('white')
@@ -577,20 +573,20 @@ class HilbertCurve:
         t.speed('fastest')
 
         t.penup()
-        t.setpos(0, 0)
-        t.setheading(90)
+        t.setpos(5, 5)
+        t.setheading(0)
         t.pendown()
 
         color_count = 1
         for char in self.sentence:
             t.color(colorsys.hsv_to_rgb(color_step*color_count, 1.0, 1.0))
 
-            if char == 'F' or char == 'G':
+            if char == 'F':
                 t.forward(length)
             elif char == '-':
-                t.right(math.degrees(self.angle))
-            elif char == '+':
                 t.left(math.degrees(self.angle))
+            elif char == '+':
+                t.right(math.degrees(self.angle))
             else:
                 pass
 
@@ -601,20 +597,17 @@ class HilbertCurve:
     def render(self, scr_dim=800):
         window = pyglet.window.Window(scr_dim, 800)
         draw_area = scr_dim * 0.9
-        if self.order == 0:
-            length = scr_dim
-        else:
-            length = scr_dim / pow(2, self.order)
+        length = scr_dim / pow(2, self.order)
         batch = pyglet.graphics.Batch()
 
-        start_point = (1, 1)
+        start_point = (length / 2, length / 2)
         lines = []
-        unit_vec = (0, 1)
+        unit_vec = (1, 0)
         vec = start_point
         color_count = 1
         color_step = 1 / len(self.sentence)
         for char in self.sentence:
-            if char == 'F' or char == 'G':
+            if char == 'F':
                 # draw forward - multiply unit vector by length
                 prev_vec = vec
                 vec = np.multiply(length, unit_vec) + vec
@@ -623,11 +616,11 @@ class HilbertCurve:
                 new_line = shapes.Line(prev_vec[0], prev_vec[1], vec[0], vec[1], batch=batch, color=color)
                 lines.append(new_line)
             elif char == '-':
-                # turn right - rotate unit vector clockwise
-                unit_vec = rotate(unit_vec, (2 * math.pi) - self.angle)
-            elif char == '+':
                 # turn left - rotate unit vector counter-clockwise
                 unit_vec = rotate(unit_vec, self.angle)
+            elif char == '+':
+                # turn right - rotate unit vector clockwise
+                unit_vec = rotate(unit_vec, (2 * math.pi) - self.angle)
             else:
                 pass
 

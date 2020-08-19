@@ -13,6 +13,8 @@ if __name__ == '__main__':
     curves.append(koch_curve)
     sierpinski_triangle = ls.SierpinskiTriangle()
     curves.append(sierpinski_triangle)
+    hilbert_curve = ls.HilbertCurve()
+    curves.append(hilbert_curve)
 
     while True:
         choice = False
